@@ -18,13 +18,11 @@ public class Program {
 			// INITIALIZES CONNECTION AND STATEMENT	
 			
 			connection = DB.getConnection();
-			ps = connection.prepareStatement("UPTADE seller "
-											+ "SET BaseSalary = BaseSalary + ? "
+			ps = connection.prepareStatement("DELETE FROM seller "
 											+ "WHERE "
-											+ "(DepartmentId = ?)");
+											+ "Id = ?");
 			
-			ps.setDouble(1, 200.0);
-			ps.setInt(2, 2);
+			ps.setInt(1, 8);
 		
 			// THROWS A QUERY INTO DB AND SAVES THE NUMBERS OF ROWS AFFECTED IN QUERY
 			
