@@ -4,24 +4,26 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 public class DB {
-	
+
 	// CONNECTION WITH DATABASE STARTS NULL:
 
 	private static Connection conn = null;
 
 	// AUXILIARY METHODS FOR CONNECTION TESTS:
-	
+
 	public static Connection getConnection() {
 
 		if (conn == null) {
 			try {
 				Properties props = loadProperties();
 				String url = props.getProperty("dburl");
-				conn = DriverManager.getConnection(url);
+				conn = DriverManager.getConnection(url, props);
 
 			} catch (SQLException e) {
 				throw new DbException(e.getMessage());
@@ -30,8 +32,8 @@ public class DB {
 
 		return conn;
 	}
-	
-	private static void closeConnection() {
+
+	public static void closeConnection() {
 
 		if (conn != null) {
 			try {
@@ -42,9 +44,9 @@ public class DB {
 			}
 		}
 	}
-	
+
 	// LOADING DATABASE PROPERTIES:
-	
+
 	private static Properties loadProperties() {
 
 		try (FileInputStream file = new FileInputStream("db.properties")) {
@@ -60,4 +62,30 @@ public class DB {
 		}
 
 	}
+
+	public static void closeStatement(Statement statement) {
+		if (statement != null) {
+
+			try {
+				statement.close();
+
+			} catch (SQLException e) {
+				throw new DbException(e.getMessage());
+			}
+		}
+	}
+
+	public static void closeResulSet(ResultSet resultSet) {
+		if (resultSet != null) {
+
+			try {
+				resultSet.close();
+
+			} catch (SQLException e) {
+				throw new DbException(e.getMessage());
+			}
+
+		}
+	}
+
 }
